@@ -95,3 +95,8 @@ val round_to_page_size : int -> int
 (** [round_to_page_size n] returns the number of bytes that will be
     allocated for storing [n] bytes in memory *)
 
+type stat
+
+val get_stat : unit -> stat
+
+val pp_stat : Format.formatter -> stat -> unit

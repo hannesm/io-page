@@ -33,7 +33,22 @@ let get_addr t = c_get_addr t
 
 let get_page t = Nativeint.(div (get_addr t) (of_int page_size))
 
+type stat = int * int * int
+
+let stat = ref (0, 0, 0)
+
+let get_stat () = !stat
+
+let add_stat n =
+  let count, number, size = !stat in
+  stat := (succ count, number + n, size + n * page_size)
+
+let pp_stat ppf (count, number, size) =
+  Format.fprintf ppf "number of calls %d number of pages %d size %d"
+    count number size
+
 let get n =
+  add_stat n ;
   if n < 0
   then raise (Invalid_argument "Io_page.get cannot allocate a -ve number of pages")
   else if n = 0
